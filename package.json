@@ -1,0 +1,116 @@
+{
+  "name": "@shinigamidev/comment-client",
+  "version": "2.0.1",
+  "description": "client for waline comment system",
+  "keywords": [
+    "valine",
+    "waline",
+    "comment",
+    "blog"
+  ],
+  "repository": {
+    "url": "https://github.com/shinigamiapp/client",
+    "directory": "waline-client"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "shinigamiapp",
+    "email": "app@shinigami.gg",
+    "url": "https://shinigami.ae"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/slim.d.ts",
+      "default": "./dist/slim.js"
+    },
+    "./component": {
+      "types": "./dist/component.d.ts",
+      "default": "./dist/component.js"
+    },
+    "./full": {
+      "types": "./dist/waline.d.ts",
+      "import": "./dist/waline.js",
+      "default": "./dist/waline.umd.js"
+    },
+    "./comment": {
+      "types": "./dist/comment.d.ts",
+      "import": "./dist/comment.js",
+      "default": "./dist/comment.umd.js"
+    },
+    "./pageview": {
+      "types": "./dist/pageview.d.ts",
+      "import": "./dist/pageview.js",
+      "default": "./dist/pageview.umd.js"
+    },
+    "./style": "./dist/waline.css",
+    "./meta": "./dist/waline-meta.css",
+    "./waline.css": "./dist/waline.css",
+    "./waline-meta.css": "./dist/waline-meta.css",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/slim.js",
+  "module": "./dist/slim.js",
+  "browser": "./dist/waline.umd.js",
+  "types": "./dist/slim.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "pnpm rollup && pnpm style",
+    "clean": "rimraf ./dist",
+    "dev": "vite",
+    "prepublishOnly": "pnpm clean && pnpm build",
+    "rollup": "rollup -c rollup.config.ts --configPlugin esbuild",
+    "style": "pnpm style:main && pnpm style:meta",
+    "style:main": "sass ./src/styles/index.scss ./dist/waline.css --style=compressed",
+    "style:meta": "sass ./src/styles/meta.scss ./dist/waline-meta.css --style=compressed"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "maintained node versions",
+      "not dead",
+      "not ie 11",
+      "not op_mini all",
+      "last 2 years"
+    ],
+    "development": [
+      "last 2 chrome version",
+      "last 2 firefox version",
+      "last 2 safari version"
+    ]
+  },
+  "dependencies": {
+    "@vueuse/core": "^10.11.0",
+    "@waline/api": "1.0.0-alpha.8",
+    "autosize": "^6.0.1",
+    "marked": "^13.0.2",
+    "marked-highlight": "^2.1.3",
+    "recaptcha-v3": "^1.10.0",
+    "vue": "^3.4.31"
+  },
+  "devDependencies": {
+    "@babel/core": "7.24.8",
+    "@babel/preset-env": "7.24.8",
+    "@giphy/js-types": "5.1.0",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.7",
+    "@types/autosize": "4.0.3",
+    "@types/node": "20.14.10",
+    "@vitejs/plugin-vue": "5.0.5",
+    "rollup": "4.18.1",
+    "rollup-plugin-dts": "6.1.1",
+    "rollup-plugin-esbuild": "6.1.1",
+    "rollup-plugin-ts": "3.4.5",
+    "sass": "^1.77.8",
+    "user-agent-data-types": "0.4.2",
+    "vite": "5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+  }
+}
