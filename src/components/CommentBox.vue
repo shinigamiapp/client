@@ -386,7 +386,10 @@ const onLogin = (event: Event): void => {
   event.preventDefault();
   const { lang, serverURL } = config.value;
 
-  void customLogin(serverURL).then((data) => {
+  void login({
+    serverURL,
+    lang,
+  }).then((data) => {
     userInfo.value = data;
     (data.remember ? localStorage : sessionStorage).setItem(
       'WALINE_USER',

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useNow } from '@vueuse/core';
+import initReadMore from '@corgras/readmore-js';
 import type { WalineComment, WalineCommentStatus } from '@waline/api';
 import type { ComputedRef } from 'vue';
-import { computed, inject } from 'vue';
+import { computed, inject, onMounted } from 'vue';
 
 import CommentBox from './CommentBox.vue';
 import {
@@ -78,6 +79,32 @@ const isReplyingCurrent = computed(
 const isEditingCurrent = computed(
   () => props.comment.objectId === props.edit?.objectId,
 );
+
+function init() {
+	initReadMore('.wl-readmore', { 
+		collapsedHeight: 200,
+		speed: 400,
+		moreLink: '<span>Read More</span>',
+		lessLink: '<span>Hide</span>',
+		animationMode: 'js',
+		animationType: 'ease-in-out',
+		scrollToTopOnCollapse: true,
+	});
+}
+
+function onSubmit(comment: WalineComment) {
+	emit('submit', comment);
+	init();
+}
+
+function onEdit(comment: WalineComment) {
+	emit('edit', comment);
+	init();
+}
+
+onMounted(() => {
+	init();
+})
 </script>
 
 <template>
@@ -161,7 +188,7 @@ const isEditingCurrent = computed(
 						<a :href="'#' + comment.pid">@{{ comment.reply_user.nick }}</a>
 						<span>: </span>
 					</p>
-					<div v-html="comment.comment" />
+					<div class="wl-readmore" v-html="comment.comment" />
 				</div>
 
 				<div style="display: flex; justify-content: space-between; align-items: center;">
@@ -264,7 +291,7 @@ const isEditingCurrent = computed(
 						@log="emit('log')"
 						@cancel-reply="emit('reply', null)"
 						@cancel-edit="emit('edit', null)"
-						@submit="emit('submit', $event)"
+						@submit="onSubmit($event)"
 					/>
 				</div>
 	
@@ -278,14 +305,41 @@ const isEditingCurrent = computed(
 						:root-id="rootId"
 						@log="emit('log')"
 						@delete="emit('delete', $event)"
-						@edit="emit('edit', $event)"
+						@edit="onEdit($event!)"
 						@like="emit('like', $event)"
 						@reply="emit('reply', $event)"
 						@status="emit('status', $event)"
 						@sticky="emit('sticky', $event)"
-						@submit="emit('submit', $event)"
+						@submit="onSubmit($event)"
 					/>
 				</div>
 			</div>
   </div>
 </template>
+
+<style>
+
+.cs_readmore-btn-wrapper {
+	margin: 16px auto 0;
+	text-align: center;
+}
+
+.cs_readmore-btn {
+	color: var(--waline-theme-color);
+	background: none;
+	border: 0;
+	margin: 0;
+	padding: 0 20px;
+	text-align: center;
+}
+
+.cs_readmore-btn:not(:disabled), [type=button].cs_readmore-btn:not(:disabled), [type=reset].cs_readmore-btn:not(:disabled), [type=submit].cs_readmore-btn:not(:disabled) {
+	cursor: pointer;
+}
+
+.cs_readmore-btn, [type=button].cs_readmore-btn, [type=reset].cs_readmore-btn, [type=submit].cs_readmore-btn {
+	-webkit-appearance: none;
+	appearance: none;
+	cursor: pointer;
+}
+</style>
