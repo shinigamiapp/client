@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@corgras/readmore-js':
+        specifier: ^2.2.0
+        version: 2.2.0
       '@vueuse/core':
         specifier: ^10.11.0
         version: 10.11.0(vue@3.4.35(typescript@5.5.4))
@@ -644,6 +647,9 @@ packages:
   '@babel/types@7.25.2':
     resolution: {integrity: sha512-YTnYtra7W9e6/oAZEHj0bJehPRUlLH9/fbpT5LfB0NhQXyALCRkRs3zH9v07IYhkgpqX6Z78FnuccZr/l4Fs4Q==}
     engines: {node: '>=6.9.0'}
+
+  '@corgras/readmore-js@2.2.0':
+    resolution: {integrity: sha512-QmuWeATcir0JtzZ4bA6rfY0U4s1IEHmCLIYzh28xAaSWnpX4eLEgjKZlBJm8zE49bRs/p7US4O4ePhwxspWPGg==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -2527,6 +2533,8 @@ snapshots:
       '@babel/helper-string-parser': 7.24.8
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
+
+  '@corgras/readmore-js@2.2.0': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
