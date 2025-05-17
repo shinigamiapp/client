@@ -87,7 +87,6 @@ function init() {
 		moreLink: '<span>Read More</span>',
 		lessLink: '<span>Hide</span>',
 		animationMode: 'js',
-		animationType: 'ease-in-out',
 		scrollToTopOnCollapse: true,
 	});
 }
@@ -316,30 +315,3 @@ onMounted(() => {
 			</div>
   </div>
 </template>
-
-<style>
-
-.cs_readmore-btn-wrapper {
-	margin: 16px auto 0;
-	text-align: center;
-}
-
-.cs_readmore-btn {
-	color: var(--waline-theme-color);
-	background: none;
-	border: 0;
-	margin: 0;
-	padding: 0 20px;
-	text-align: center;
-}
-
-.cs_readmore-btn:not(:disabled), [type=button].cs_readmore-btn:not(:disabled), [type=reset].cs_readmore-btn:not(:disabled), [type=submit].cs_readmore-btn:not(:disabled) {
-	cursor: pointer;
-}
-
-.cs_readmore-btn, [type=button].cs_readmore-btn, [type=reset].cs_readmore-btn, [type=submit].cs_readmore-btn {
-	-webkit-appearance: none;
-	appearance: none;
-	cursor: pointer;
-}
-</style>
