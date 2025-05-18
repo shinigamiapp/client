@@ -18,7 +18,7 @@ export default defineConfig({
     proxy: {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       '/api': {
-        target: 'https://waline-server-tes.vercel.app',
+        target: 'http://localhost:8360',
         changeOrigin: true,
       },
     },

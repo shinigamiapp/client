@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Waline init test</title>
   </head>
-  <body style="background-color: #070403;">
+  <body style="background-color: #070403; color: #fff;">
     阅读量: <span id="/" class="waline-pageview-count"></span> 评论数:
     <span id="/" class="waline-comment-count"></span>
     <div id="waline" style="max-width: 800px; margin: 0 auto"></div>
@@ -22,7 +22,7 @@
 				dark: true,
 				lang: 'en',
         serverURL:
-          import.meta.env.SERVERURL || 'https://walinejs.comment.lithub.cc',
+          import.meta.env.SERVERURL || 'http://localhost:8360',
         emoji: [
           '//unpkg.com/@waline/emojis@1.1.0/bilibili',
           '//unpkg.com/@waline/emojis@1.1.0/qq',
