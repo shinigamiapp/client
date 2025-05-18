@@ -3,7 +3,7 @@ import { useNow } from '@vueuse/core';
 import initReadMore from '@corgras/readmore-js';
 import type { WalineComment, WalineCommentStatus } from '@waline/api';
 import type { ComputedRef } from 'vue';
-import { computed, inject, onMounted } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 
 import CommentBox from './CommentBox.vue';
 import {
@@ -80,6 +80,7 @@ const isEditingCurrent = computed(
   () => props.comment.objectId === props.edit?.objectId,
 );
 
+const showReplies = ref<boolean>(false);
 function init() {
 	initReadMore('.wl-readmore', { 
 		collapsedHeight: 200,
@@ -230,47 +231,48 @@ onMounted(() => {
 							<ReplyIcon />
 						</button>
 					</div>
-					<div v-if="isAdmin && !isEditingCurrent" class="wl-admin-actions">
-						
-						
+					
+					<div style="display: flex; align-items: center; gap: 0.5em">
+						<div class="wl-admin-actions" v-if="'children' in comment && comment.children.length > 0">
+							<button
+								type="button"
+								class="wl-btn wl-sticky"
+								@click="showReplies = !showReplies"
+							>
+								{{ !showReplies ? 'See' : 'Hide' }} all replies
+							</button>
+						</div>
+						<div v-if="isAdmin && !isEditingCurrent" class="wl-admin-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5em;">
+							<button
+								v-if="isAdmin && !('rid' in comment)"
+								type="submit"
+								class="wl-btn wl-sticky"
+								@click="emit('sticky', comment)"
+							>
+								{{ comment.sticky ? locale.unsticky : locale.sticky }}
+							</button>
+							<details class="dropdown">
+									<summary role="button">
+										<a class="button">
+											<svg width="24" height="24" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+												<path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="#999"/>
+												<path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="#999"/>
+												<path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="#999"/>
+											</svg>
+										</a>
+									</summary>
+									<ul>
+										<li v-for="status in commentStatus" :key="status">
+											<span
+												:class="{ disabled: comment.status === status }"
+												@click="emit('status', { status, comment })"
+											>{{ locale[status] }}</span>
+										</li>
+								</ul>
+							</details>
+			
 							
-						<details class="dropdown">
-								<summary role="button">
-									<a class="button">
-										<svg width="24" height="24" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
-											<path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="#999"/>
-											<path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="#999"/>
-											<path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="#999"/>
-										</svg>
-									</a>
-								</summary>
-								<ul>
-									<li v-for="status in commentStatus" :key="status">
-										<span
-											:class="{ disabled: comment.status === status }"
-											@click="emit('status', { status, comment })"
-										>{{ locale[status] }}</span>
-									</li>
-							</ul>
-						</details>
-						<!-- <button
-							v-for="status in commentStatus"
-							:key="status"
-							type="submit"
-							:class="`wl-btn wl-${status}`"
-							:disabled="comment.status === status"
-							@click="emit('status', { status, comment })"
-							v-text="locale[status]"
-						/> -->
-		
-						<button
-							v-if="isAdmin && !('rid' in comment)"
-							type="submit"
-							class="wl-btn wl-sticky"
-							@click="emit('sticky', comment)"
-						>
-							{{ comment.sticky ? locale.unsticky : locale.sticky }}
-						</button>
+						</div>
 					</div>
 				</div>
 	
@@ -293,8 +295,8 @@ onMounted(() => {
 						@submit="onSubmit($event)"
 					/>
 				</div>
-	
-				<div v-if="'children' in comment" class="wl-quote">
+				
+				<div v-if="'children' in comment" v-show="showReplies" class="wl-quote">
 					<CommentCard
 						v-for="child in comment.children"
 						:key="child.objectId"
@@ -315,3 +317,31 @@ onMounted(() => {
 			</div>
   </div>
 </template>
+
+<style>
+.wl-all-comments-wrapper {
+	margin: 6px auto 0;
+	text-align: center;
+	
+}
+
+/* .wl-all-comments-wrapper:before {
+    border-top: 1px solid var(--waline-border-color);
+    color: #A4ACBE;
+    content: '';
+    display: block;
+    width: 100%;
+    z-index: -1;
+    position: relative;
+    transform: translateY(15px);
+} */
+
+/* .wl-all-comments-btn {
+    color: var(--cs-body-color-secondary);
+    background: var(--cs-body-bg-primary);
+    border: 0;
+    margin: 0;
+    padding: 0 20px;
+    text-align: center;
+} */
+</style>
