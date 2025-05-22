@@ -177,6 +177,29 @@
     }
   }
 
+	.wl-show-comment {
+		padding: 0;
+    margin-right: 6px;
+    display: inline-flex;
+    align-items: center;
+
+    // padding: 4px;
+    border: none;
+
+    background: transparent;
+    color: var(--waline-color);
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--waline-theme-color);
+    }
+	}
+
   .wl-content {
     position: relative;
 

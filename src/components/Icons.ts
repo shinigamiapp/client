@@ -195,3 +195,36 @@ export const GifIcon: FunctionalComponent = () =>
       }),
     ],
   );
+
+export const PlusIcon: FunctionalComponent = () =>
+	h(
+		'svg',
+		{
+			width: 24,
+			height: 24,
+			fill: 'currentcolor',
+			viewBox: '0 0 24 24',
+		},
+		h('path', {
+			d: 'M13 6a1 1 0 1 0-2 0v5H6a1 1 0 1 0 0 2h5v5a1 1 0 1 0 2 0v-5h5a1 1 0 1 0 0-2h-5z',
+		}),
+	);
+
+export const MinusIcon: FunctionalComponent = () =>
+	h(
+		'svg',
+		{
+			width: 24,
+			height: 24,
+			fill: 'currentcolor',
+			viewBox: '0 0 24 24',
+		},
+		h('path', {
+			fill: 'none',
+			stroke:"currentColor",
+			'stroke-linecap':"round",
+			'stroke-linejoin':"round",
+			'stroke-width':"1.5",
+			d: 'M6 12h12',
+		}),
+	);
