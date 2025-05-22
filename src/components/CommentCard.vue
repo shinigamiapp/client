@@ -10,6 +10,8 @@ import {
   DeleteIcon,
   EditIcon,
   LikeIcon,
+  PlusIcon,
+	MinusIcon,
   ReplyIcon,
   VerifiedIcon,
 } from './Icons.js';
@@ -236,10 +238,16 @@ onMounted(() => {
 						<div class="wl-admin-actions" v-if="'children' in comment && comment.children.length > 0">
 							<button
 								type="button"
-								class="wl-btn wl-sticky"
+								class="wl-show-comment"
+								:title="showReplies ? 'Hide replies' : 'Show replies'"
 								@click="showReplies = !showReplies"
 							>
-								{{ !showReplies ? 'See' : 'Hide' }} all replies
+									<template v-if="!showReplies">
+										<PlusIcon />
+									</template>
+									<template v-else>
+										<MinusIcon />
+									</template>
 							</button>
 						</div>
 						<div v-if="isAdmin && !isEditingCurrent" class="wl-admin-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5em;">
@@ -317,31 +325,3 @@ onMounted(() => {
 			</div>
   </div>
 </template>
-
-<style>
-.wl-all-comments-wrapper {
-	margin: 6px auto 0;
-	text-align: center;
-	
-}
-
-/* .wl-all-comments-wrapper:before {
-    border-top: 1px solid var(--waline-border-color);
-    color: #A4ACBE;
-    content: '';
-    display: block;
-    width: 100%;
-    z-index: -1;
-    position: relative;
-    transform: translateY(15px);
-} */
-
-/* .wl-all-comments-btn {
-    color: var(--cs-body-color-secondary);
-    background: var(--cs-body-bg-primary);
-    border: 0;
-    margin: 0;
-    padding: 0 20px;
-    text-align: center;
-} */
-</style>
