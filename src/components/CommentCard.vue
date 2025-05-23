@@ -242,12 +242,13 @@ onMounted(() => {
 								:title="showReplies ? 'Hide replies' : 'Show replies'"
 								@click="showReplies = !showReplies"
 							>
-									<template v-if="!showReplies">
-										<PlusIcon />
-									</template>
-									<template v-else>
-										<MinusIcon />
-									</template>
+										<template v-if="!showReplies">
+											<PlusIcon />
+										</template>
+										<template v-else>
+											<MinusIcon />
+										</template>
+										{{ comment.children.length }} Balasan
 							</button>
 						</div>
 						<div v-if="isAdmin && !isEditingCurrent" class="wl-admin-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5em;">
