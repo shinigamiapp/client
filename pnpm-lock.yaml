@@ -32,6 +32,9 @@ importers:
       vue:
         specifier: ^3.4.31
         version: 3.4.35(typescript@5.5.4)
+      vue-toastification:
+        specifier: 2.0.0-rc.5
+        version: 2.0.0-rc.5(vue@3.4.35(typescript@5.5.4))
     devDependencies:
       '@babel/core':
         specifier: 7.24.8
@@ -1755,6 +1758,11 @@ packages:
       '@vue/composition-api':
         optional: true
 
+  vue-toastification@2.0.0-rc.5:
+    resolution: {integrity: sha512-q73e5jy6gucEO/U+P48hqX+/qyXDozAGmaGgLFm5tXX4wJBcVsnGp4e/iJqlm9xzHETYOilUuwOUje2Qg1JdwA==}
+    peerDependencies:
+      vue: ^3.0.2
+
   vue@3.4.35:
     resolution: {integrity: sha512-+fl/GLmI4GPileHftVlCdB7fUL4aziPcqTudpTGXCT8s+iZWuOCeNEB5haX6Uz2IpRrbEXOgIFbe+XciCuGbNQ==}
     peerDependencies:
@@ -3454,6 +3462,10 @@ snapshots:
       sass: 1.77.8
 
   vue-demi@0.14.10(vue@3.4.35(typescript@5.5.4)):
+    dependencies:
+      vue: 3.4.35(typescript@5.5.4)
+
+  vue-toastification@2.0.0-rc.5(vue@3.4.35(typescript@5.5.4)):
     dependencies:
       vue: 3.4.35(typescript@5.5.4)
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useDebounceFn, useEventListener } from '@vueuse/core';
+import { useToast } from "vue-toastification";
 import type { AddCommentResponse, UpdateCommentResponse, WalineComment, WalineCommentData } from '@waline/api';
 import { UserInfo, addComment, login, updateComment } from '@waline/api';
 import autosize from 'autosize';
@@ -87,6 +88,7 @@ const emit = defineEmits<{
   (event: 'submit', comment: WalineComment): void;
 }>();
 
+const toast = useToast();
 const config = inject<ComputedRef<WalineConfig>>('config')!;
 
 const editor = useEditor();
@@ -183,7 +185,7 @@ const uploadImage = (file: File): Promise<void> => {
       );
     })
     .catch((err: Error) => {
-      alert(err.message);
+			toast.error(err.message);
       editor.value = editor.value.replace(uploadText, '');
     })
     .then(() => {
@@ -254,8 +256,8 @@ const submitComment = async (): Promise<void> => {
       // check nick
       if (requiredMeta.indexOf('nick') > -1 && !comment.nick) {
         inputRefs.value.nick?.focus();
-
-        return alert(locale.value.nickError);
+				toast.error(locale.value.nickError)
+        return;
       }
 
       // check mail
@@ -264,8 +266,8 @@ const submitComment = async (): Promise<void> => {
         (comment.mail && !isValidEmail(comment.mail))
       ) {
         inputRefs.value.mail?.focus();
-
-        return alert(locale.value.mailError);
+				toast.error(locale.value.mailError)
+        return;
       }
 
       if (!comment.nick) comment.nick = locale.value.anonymous;
@@ -279,13 +281,15 @@ const submitComment = async (): Promise<void> => {
     return;
   }
 
-  if (!isWordNumberLegal.value)
-    return alert(
+  if (!isWordNumberLegal.value) {
+		toast.error(
       locale.value.wordHint
         .replace('$0', (wordLimit as [number, number])[0].toString())
         .replace('$1', (wordLimit as [number, number])[1].toString())
         .replace('$2', wordNumber.value.toString()),
     );
+  	return;
+	}
 
   comment.comment = parseEmoji(comment.comment, emoji.value.map);
 
@@ -323,22 +327,25 @@ const submitComment = async (): Promise<void> => {
 		isSubmitting.value = false;
 		
 		if (typeof response.errno == 'undefined' && response.success === false) {
-			alert(response.message);
+			toast.error(response.message);
 			onLogout();
 			return;
 		};
 		
 		if(response.errno == 1001) {
-			alert(response.errmsg);
+			toast.error(response.errmsg);
 			onLogout();
 			return
 		}
 
     if (response.errmsg) {
 			if (response.errno === 401) {
-				return alert('Login dulu tong!');
+				toast.info('Login dulu tong!');
+				return 
 			}
-			return alert(response.errmsg);
+
+			toast.error(response.errmsg);
+			return
 		}
 
     emit('submit', response.data!);
@@ -355,7 +362,7 @@ const submitComment = async (): Promise<void> => {
   } catch (err: unknown) {
     isSubmitting.value = false;
 		
-    alert((err as TypeError).message);
+    toast.error((err as TypeError).message);
   }
 };
 
