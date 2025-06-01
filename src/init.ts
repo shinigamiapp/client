@@ -1,4 +1,6 @@
 import { createApp, h, reactive, watchEffect } from 'vue';
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 import { commentCount } from './comment.js';
 import Waline from './components/WalineComment.vue';
@@ -77,8 +79,14 @@ export const init = ({
   const app = root
     ? createApp(() => h(Waline, { path: state.path, ...props }))
     : null;
-
-  if (app) app.mount(root!);
+	
+  if (app) {
+		app.use(Toast, {
+			position: 'top-right',
+			timeout: 3000,
+		});
+		app.mount(root!);
+	}
 
   const stopComment = watchEffect(updateCommentCount);
   const stopPageview = watchEffect(updatePageviewCount);

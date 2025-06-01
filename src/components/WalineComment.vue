@@ -12,6 +12,7 @@ import type {
 } from '@waline/api';
 import { deleteComment, getComment, updateComment } from '@waline/api';
 import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
+import { useToast } from "vue-toastification";
 
 import Reaction from './ArticleReaction.vue';
 import CommentBox from './CommentBox.vue';
@@ -58,6 +59,7 @@ const sortKeyMap: Record<WalineCommentSorting, SortKey> = {
 };
 const sortingMethods = Object.keys(sortKeyMap) as WalineCommentSorting[];
 
+const toast = useToast();
 const userInfo = useUserInfo();
 const likeStorage = useLikeStorage();
 
@@ -184,6 +186,39 @@ const onStatusChange = async ({
   comment.status = status;
 };
 
+const onBanned = async ({ user_id }: WalineComment): Promise<void> => {
+	try {
+		const { serverURL, lang } = config.value;
+		const payload = {
+			is_banned: 1,
+		}
+		const response = await fetch(
+			`${serverURL}/api/user/${user_id}?lang=${lang}`,
+			{
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${userInfo.value?.token}`,
+				},
+				body: JSON.stringify({
+					is_banned: 1
+				}),
+			},
+		)
+
+		if (response.ok) {
+			toast.success('User banned successfully');
+			return;
+		} else {
+			toast.error('Failed to ban user');
+		}
+		
+	} catch (error) {
+		console.error(error);
+	}
+	
+}
+
 const onSticky = async (comment: WalineComment): Promise<void> => {
   if ('rid' in comment) return;
 
@@ -248,7 +283,7 @@ const onLike = async (comment: WalineComment): Promise<void> => {
 		});
 		
 		if (typeof response.errno == 'undefined' && response.success === false) {
-			alert(response.message);
+			toast?.error(response.message);
 			return;
 		};
 	
@@ -317,6 +352,7 @@ onUnmounted(() => abort?.());
         @delete="onDelete"
         @sticky="onSticky"
         @like="onLike"
+				@banned="onBanned"
       />
     </div>
 

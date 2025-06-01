@@ -44,6 +44,7 @@ const emit = defineEmits<{
   ): void;
   (event: 'sticky', comment: WalineComment): void;
   (event: 'reply', comment: WalineComment | null): void;
+	(event: 'banned', comment: WalineComment): void;
 }>();
 
 const commentStatus: WalineCommentStatus[] = ['approved', 'waiting', 'spam'];
@@ -105,6 +106,8 @@ function onEdit(comment: WalineComment) {
 }
 
 onMounted(() => {
+	console.log('comment', props.comment);
+	console.log('rootId', props.rootId);
 	init();
 })
 </script>
@@ -276,6 +279,11 @@ onMounted(() => {
 												:class="{ disabled: comment.status === status }"
 												@click="emit('status', { status, comment })"
 											>{{ locale[status] }}</span>
+										</li>
+										<li>
+											<span
+												@click="emit('banned', comment)"
+											>Banned</span>
 										</li>
 								</ul>
 							</details>
