@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDebounceFn, useEventListener } from '@vueuse/core';
-import { useToast } from "vue-toastification";
+import * as pkg from "vue-toastification";
 import type { AddCommentResponse, UpdateCommentResponse, WalineComment, WalineCommentData } from '@waline/api';
 import { UserInfo, addComment, login, updateComment } from '@waline/api';
 import autosize from 'autosize';
@@ -88,6 +88,7 @@ const emit = defineEmits<{
   (event: 'submit', comment: WalineComment): void;
 }>();
 
+const { useToast } = pkg;
 const toast = useToast();
 const config = inject<ComputedRef<WalineConfig>>('config')!;
 

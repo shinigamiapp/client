@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import vue from '@vitejs/plugin-vue';
+import postcss from 'rollup-plugin-postcss'
 import dts from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 
@@ -54,6 +55,7 @@ export default [
       }),
       nodeResolve({ preferBuiltins: true }),
       commonjs(),
+			postcss()
     ],
     treeshake: 'smallest',
   },
@@ -112,6 +114,7 @@ export default [
       'marked-highlight',
       'recaptcha-v3',
       'vue',
+			'vue-toastification'
     ],
   },
 
@@ -133,6 +136,7 @@ export default [
       'marked-highlight',
       'recaptcha-v3',
       'vue',
+			'vue-toastification'
     ],
     plugins: [
       vue({
