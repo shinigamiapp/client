@@ -5,6 +5,7 @@
 /* eslint-disable vue/require-prop-types */
 import { useStyleTag } from '@vueuse/core';
 import type {
+	UpdateCommentResponse,
   WalineComment,
   WalineCommentStatus,
   WalineRootComment,
@@ -22,6 +23,10 @@ import { getConfig, getDarkStyle } from '../utils/index.js';
 import { version } from '../version.js';
 
 type SortKey = 'insertedAt_desc' | 'insertedAt_asc' | 'like_desc';
+type ResponseLike = UpdateCommentResponse & {
+	success?: boolean;
+	message?: string;
+}
 
 const props = defineProps([
   'serverURL',
@@ -230,28 +235,33 @@ const onDelete = async ({ objectId }: WalineComment): Promise<void> => {
 };
 
 const onLike = async (comment: WalineComment): Promise<void> => {
-  const { serverURL, lang } = config.value;
-  const { objectId } = comment;
-  const hasLiked = likeStorage.value.includes(objectId);
-
-  await updateComment({
-    serverURL,
-    lang,
-    objectId,
-    token: userInfo.value?.token,
-    comment: { like: !hasLiked },
-  });
-
-  if (hasLiked)
-    likeStorage.value = likeStorage.value.filter((id) => id !== objectId);
-  else {
-    likeStorage.value = [...likeStorage.value, objectId];
-
-    if (likeStorage.value.length > 50)
-      likeStorage.value = likeStorage.value.slice(-50);
-  }
-
-  comment.like = (comment.like || 0) + (hasLiked ? -1 : 1);
+		const { serverURL, lang } = config.value;
+		const { objectId } = comment;
+		const hasLiked = likeStorage.value.includes(objectId);
+	
+		const response: ResponseLike = await updateComment({
+			serverURL,
+			lang,
+			objectId,
+			token: userInfo.value?.token,
+			comment: { like: !hasLiked },
+		});
+		
+		if (typeof response.errno == 'undefined' && response.success === false) {
+			alert(response.message);
+			return;
+		};
+	
+		if (hasLiked)
+			likeStorage.value = likeStorage.value.filter((id) => id !== objectId);
+		else {
+			likeStorage.value = [...likeStorage.value, objectId];
+	
+			if (likeStorage.value.length > 50)
+				likeStorage.value = likeStorage.value.slice(-50);
+		}
+	
+		comment.like = (comment.like || 0) + (hasLiked ? -1 : 1);
 };
 
 provide('config', config);

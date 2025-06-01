@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDebounceFn, useEventListener } from '@vueuse/core';
-import type { WalineComment, WalineCommentData } from '@waline/api';
+import type { AddCommentResponse, UpdateCommentResponse, WalineComment, WalineCommentData } from '@waline/api';
 import { UserInfo, addComment, login, updateComment } from '@waline/api';
 import autosize from 'autosize';
 import type { ComputedRef, DeepReadonly } from 'vue';
@@ -47,6 +47,11 @@ import {
   parseMarkdown,
   userAgent,
 } from '../utils/index.js';
+
+type CustomCommentType = (UpdateCommentResponse | AddCommentResponse) & {
+	success?: boolean;
+	message?: string;
+}
 
 const props = withDefaults(
   defineProps<{
@@ -307,14 +312,21 @@ const submitComment = async (): Promise<void> => {
       comment,
     };
 
-    const response = await (props.edit
+    const response: CustomCommentType = await (props.edit
       ? updateComment({
           objectId: props.edit.objectId,
           ...options,
         })
       : addComment(options));
-
-    isSubmitting.value = false;
+		
+			
+		isSubmitting.value = false;
+		
+		if (typeof response.errno == 'undefined' && response.success === false) {
+			alert(response.message);
+			onLogout();
+			return;
+		};
 		
 		if(response.errno == 1001) {
 			alert(response.errmsg);
