@@ -12,7 +12,7 @@ import type {
 } from '@waline/api';
 import { deleteComment, getComment, updateComment } from '@waline/api';
 import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
-import { useToast } from "vue-toastification";
+import * as pkg from "vue-toastification";
 
 import Reaction from './ArticleReaction.vue';
 import CommentBox from './CommentBox.vue';
@@ -59,6 +59,7 @@ const sortKeyMap: Record<WalineCommentSorting, SortKey> = {
 };
 const sortingMethods = Object.keys(sortKeyMap) as WalineCommentSorting[];
 
+const { useToast } = pkg
 const toast = useToast();
 const userInfo = useUserInfo();
 const likeStorage = useLikeStorage();

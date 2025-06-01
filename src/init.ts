@@ -1,6 +1,5 @@
 import { createApp, h, reactive, watchEffect } from 'vue';
 import Toast from "vue-toastification";
-import "vue-toastification/dist/index.css";
 
 import { commentCount } from './comment.js';
 import Waline from './components/WalineComment.vue';
