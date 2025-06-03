@@ -107,6 +107,7 @@ export default [
     ],
     treeshake: 'smallest',
     external: [
+			'@corgras/readmore-js',
       '@vueuse/core',
       '@waline/api',
       'autosize',
@@ -129,6 +130,7 @@ export default [
       },
     ],
     external: [
+			'@corgras/readmore-js',
       '@vueuse/core',
       '@waline/api',
       'autosize',
