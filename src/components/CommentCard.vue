@@ -87,11 +87,14 @@ const showReplies = ref<boolean>(false);
 function init() {
 	initReadMore('.wl-readmore', { 
 		collapsedHeight: 200,
-		speed: 400,
+		speed: 300,
 		moreLink: '<span>Read More</span>',
-		lessLink: '<span>Hide</span>',
-		animationMode: 'js',
-		scrollToTopOnCollapse: true,
+		lessLink: '',
+		afterToggle: (button: any, _element: any, isExpanded: boolean) => {
+			if(isExpanded) {
+				button.style.display = 'none';
+			}
+		}
 	});
 }
 
@@ -106,8 +109,7 @@ function onEdit(comment: WalineComment) {
 }
 
 onMounted(() => {
-	console.log('comment', props.comment);
-	console.log('rootId', props.rootId);
+	
 	init();
 })
 </script>
