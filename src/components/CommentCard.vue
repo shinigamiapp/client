@@ -3,7 +3,7 @@ import { useNow } from '@vueuse/core';
 import initReadMore from '@corgras/readmore-js';
 import type { WalineComment, WalineCommentStatus } from '@waline/api';
 import type { ComputedRef } from 'vue';
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, nextTick } from 'vue';
 
 import CommentBox from './CommentBox.vue';
 import {
@@ -11,7 +11,7 @@ import {
   EditIcon,
   LikeIcon,
   PlusIcon,
-	MinusIcon,
+  MinusIcon,
   ReplyIcon,
   VerifiedIcon,
 } from './Icons.js';
@@ -44,7 +44,7 @@ const emit = defineEmits<{
   ): void;
   (event: 'sticky', comment: WalineComment): void;
   (event: 'reply', comment: WalineComment | null): void;
-	(event: 'banned', comment: WalineComment): void;
+  (event: 'banned', comment: WalineComment): void;
 }>();
 
 const commentStatus: WalineCommentStatus[] = ['approved', 'waiting', 'spam'];
@@ -58,7 +58,6 @@ const locale = computed(() => config.value.locale);
 
 const link = computed(() => {
   const { link } = props.comment;
-
   return link ? (isLinkHttp(link) ? link : `https://${link}`) : '';
 });
 
@@ -71,8 +70,7 @@ const time = computed(() =>
 const isAdmin = computed(() => userInfo.value.type === 'administrator');
 
 const isOwner = computed(
-  () =>
-    props.comment.user_id && userInfo.value.objectId === props.comment.user_id,
+  () => props.comment.user_id && userInfo.value.objectId === props.comment.user_id,
 );
 
 const isReplyingCurrent = computed(
@@ -83,35 +81,78 @@ const isEditingCurrent = computed(
   () => props.comment.objectId === props.edit?.objectId,
 );
 
+// ───────────────────────────────────────────────────────────────
+// Each CommentCard needs its own `showReplies` reactive state:
 const showReplies = ref<boolean>(false);
+
+// Initialize ReadMore exactly once per element, and never collapse again
 function init() {
-	initReadMore('.wl-readmore', { 
-		collapsedHeight: 200,
-		speed: 300,
-		moreLink: '<span>Read More</span>',
-		lessLink: '',
-		afterToggle: (button: any, _element: any, isExpanded: boolean) => {
-			if(isExpanded) {
-				button.style.display = 'none';
-			}
-		}
-	});
+  document
+    .querySelectorAll<HTMLElement>('.wl-readmore')
+    .forEach((el) => {
+      // If already expanded, skip entirely
+      if (el.dataset.readmoreExpanded === 'true') return;
+
+      // If already initialized, skip
+      if (el.dataset.readmoreInit === 'true') return;
+
+      // Ensure a unique ID for selector-based initReadMore
+      if (!el.id) {
+        el.id = `wl-rm-${Math.random().toString(36).slice(2, 9)}`;
+      }
+
+    initReadMore(`#${el.id}`, {
+      collapsedHeight: 350,
+      speed: 300,
+      animationType: 'linear',
+      moreLink: '<span>Read&nbsp;More</span>',
+      lessLink: '',
+      breakpoints: {
+        576: {
+          collapsedHeight: 350,
+          speed: 200,
+          animationType: 'linear',
+          moreLink: '<span>Details</span>',
+          lessLink: '', // optional, since we don’t need collapse
+        },
+        768: {
+          collapsedHeight: 350,
+          speed: 300,
+          animationType: 'linear',
+        },
+        1024: {
+          disableCollapse: true,
+        },
+      },
+      afterToggle(button, element, isExpanded) {
+        if (isExpanded) {
+          element.dataset.readmoreExpanded = 'true';
+          button.remove();
+          element.style.maxHeight = 'none';
+        }
+      },
+    });
+
+      // Mark that this element has been bound once
+      el.dataset.readmoreInit = 'true';
+    });
 }
 
-function onSubmit(comment: WalineComment) {
-	emit('submit', comment);
-	init();
+async function onSubmit(comment: WalineComment) {
+  emit('submit', comment);
+  await nextTick();
+  init();
 }
 
-function onEdit(comment: WalineComment) {
-	emit('edit', comment);
-	init();
+async function onEdit(comment: WalineComment) {
+  emit('edit', comment);
+  await nextTick();
+  init();
 }
 
 onMounted(() => {
-	
-	init();
-})
+  init();
+});
 </script>
 
 <template>
