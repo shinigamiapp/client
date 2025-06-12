@@ -10,10 +10,11 @@ import {
   DeleteIcon,
   EditIcon,
   LikeIcon,
-  PlusIcon,
-	MinusIcon,
+  ChevronDownIcon,
+	ChevronUpIcon,
   ReplyIcon,
   VerifiedIcon,
+	StickyIcon
 } from './Icons.js';
 import { useLikeStorage, useUserInfo } from '../composables/index.js';
 import type { WalineConfig } from '../utils/index.js';
@@ -108,6 +109,11 @@ function onEdit(comment: WalineComment) {
 	init();
 }
 
+function onReply(comment: WalineComment) {
+	emit('reply', isReplyingCurrent.value ? null : comment)
+	showReplies.value = true;
+}
+
 onMounted(() => {
 	
 	init();
@@ -120,20 +126,10 @@ onMounted(() => {
     :class="['wl-card-item', { sticky: comment['sticky'] }]"
   >
 			<div 
-				style="z-index: 1; top: -5px; position: absolute; opacity: 70%;"
+				style="z-index: 1; top: -10px; position: absolute; opacity: 70%;"
 				v-if="comment['sticky']"
 			>
-				<svg fill="#BBBBBB" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-					width="20px" height="20px" viewBox="0 0 523.829 523.83"
-					xml:space="preserve">
-				<g>
-					<path d="M519.572,109.974L413.849,4.327c-5.737-5.737-15.07-5.737-20.808,0l-12.164,12.164c-5.737,5.738-5.737,15.071,0,20.808
-						l4.896,4.896L265.209,162.835c-29.069-15.912-66.172-11.628-90.729,12.928l-43.452,43.452c-5.737,5.737-5.737,15.07,0,20.808
-						l53.321,53.32L3.962,492.704c-5.432,6.043-5.278,15.605,0.459,21.344l5.278,5.278c5.738,5.737,15.3,6.043,21.344,0.459
-						l199.206-180.158l52.861,52.862c5.737,5.737,15.07,5.737,20.808,0l43.452-43.452c24.48-24.48,28.917-61.2,13.312-90.271
-						l120.641-120.64l4.896,4.896c5.737,5.737,15.07,5.737,20.809,0l12.163-12.164C525.31,125.121,525.31,115.788,519.572,109.974z"/>
-				</g>
-				</svg>
+				<StickyIcon />
 			</div>
 
 			<div class="wl-user" aria-hidden="true">
@@ -224,8 +220,10 @@ onMounted(() => {
 							:title="like ? locale.cancelLike : locale.like"
 							@click="emit('like', comment)"
 						>
-							<LikeIcon :active="like" />
-							{{ 'like' in comment ? comment.like : '' }}
+							<span style="display: flex; flex-direction: row; gap: 0.25em;">
+								<LikeIcon :active="like" />
+									{{ 'like' in comment ? comment.like : '' }}
+							</span>
 						</button>
 	
 						<button
@@ -233,29 +231,14 @@ onMounted(() => {
 							class="wl-reply"
 							:class="{ active: isReplyingCurrent }"
 							:title="isReplyingCurrent ? locale.cancelReply : locale.reply"
-							@click="emit('reply', isReplyingCurrent ? null : comment)"
+							@click="onReply(comment)"
 						>
-							<ReplyIcon />
+							<span>Reply</span>
 						</button>
 					</div>
 					
-					<div style="display: flex; align-items: center; gap: 0.5em">
-						<div class="wl-admin-actions" v-if="'children' in comment && comment.children.length > 0">
-							<button
-								type="button"
-								class="wl-show-comment"
-								:title="showReplies ? 'Hide replies' : 'Show replies'"
-								@click="showReplies = !showReplies"
-							>
-										<template v-if="!showReplies">
-											<PlusIcon />
-										</template>
-										<template v-else>
-											<MinusIcon />
-										</template>
-										{{ comment.children.length }} Balasan
-							</button>
-						</div>
+					<!-- <div style="display: flex; align-items: center; gap: 0.5em"> -->
+						
 						<div v-if="isAdmin && !isEditingCurrent" class="wl-admin-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 0.5em;">
 							<button
 								v-if="isAdmin && !('rid' in comment)"
@@ -292,7 +275,7 @@ onMounted(() => {
 			
 							
 						</div>
-					</div>
+					<!-- </div> -->
 				</div>
 	
 	
@@ -314,6 +297,23 @@ onMounted(() => {
 						@submit="onSubmit($event)"
 					/>
 				</div>
+
+				<div class="" v-if="'children' in comment && comment.children.length > 0">
+					<button
+						type="button"
+						class="wl-show-comment"
+						:title="showReplies ? 'Hide replies' : 'Show replies'"
+						@click="showReplies = !showReplies"
+					>
+							<template v-if="!showReplies">
+								<ChevronDownIcon />
+							</template>
+							<template v-else>
+								<ChevronUpIcon />
+							</template>
+							{{ comment.children.length }} balasan
+					</button>
+				</div>
 				
 				<div v-if="'children' in comment" v-show="showReplies" class="wl-quote">
 					<CommentCard
@@ -327,12 +327,14 @@ onMounted(() => {
 						@delete="emit('delete', $event)"
 						@edit="onEdit($event!)"
 						@like="emit('like', $event)"
-						@reply="emit('reply', $event)"
+						@reply="onReply($event!)"
 						@status="emit('status', $event)"
 						@sticky="emit('sticky', $event)"
 						@submit="onSubmit($event)"
 					/>
 				</div>
+
+				
 			</div>
   </div>
 </template>

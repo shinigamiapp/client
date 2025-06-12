@@ -48,7 +48,7 @@
   flex: 1;
   width: 0;
   padding-bottom: 0.5em;
-  border-bottom: 1px dashed var(--waline-border-color);
+  // border-bottom: 1px dashed var(--waline-border-color);
 
 	&.sticky {
 		border-bottom: none;
@@ -139,8 +139,11 @@
   }
 
   .wl-comment-actions {
+		display: inline-flex;
+		align-items: center;
+		gap: 9px;
     // float: right;
-    // line-height: 1;
+    line-height: 1;
 
     [dir='rtl'] & {
       float: left;
@@ -152,11 +155,9 @@
   .wl-reply,
   .wl-edit {
 		padding: 0;
-    margin-right: 6px;
     display: inline-flex;
     align-items: center;
 
-    // padding: 4px;
     border: none;
 
     background: transparent;
@@ -178,16 +179,17 @@
   }
 
 	.wl-show-comment {
-		padding: 0;
+		padding: 0 4px;
+		margin-top: 4px;
     margin-right: 6px;
     display: inline-flex;
     align-items: center;
 
-    font-size: 10px;
+    // font-size: 10px;
     border: none;
 
     background: transparent;
-    color: var(--waline-color);
+    color: var(--waline-theme-color);
 
     line-height: 1;
 
@@ -286,7 +288,7 @@
   }
 
   .wl-quote {
-    border-inline-start: 1px dashed rgb(237 237 237 / 50%);
+    // border-inline-start: 1px dashed rgb(237 237 237 / 50%);
 
     .wl-user {
       --avatar-size: var(--waline-m-avatar-size);

@@ -350,9 +350,8 @@ const submitComment = async (): Promise<void> => {
 		}
 
     emit('submit', response.data!);
-
+		
     editor.value = '';
-
     previewText.value = '';
 
     // ensure changes are applied to dom to avoid  https://github.com/walinejs/waline/issues/2371

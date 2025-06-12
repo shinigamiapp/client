@@ -159,11 +159,53 @@ const onSubmit = (comment: WalineComment): void => {
     if (!Array.isArray(repliedComment.children)) repliedComment.children = [];
 
     repliedComment.children.push(comment);
+
+		const commentMap = new Map();
+		repliedComment.children.forEach(comment => {
+			commentMap.set(comment.objectId, comment);
+		});
+		
+		const childrenMap = new Map();
+		repliedComment.children.forEach(comment => {
+			
+
+			if (!childrenMap.has(comment.pid)) {
+				childrenMap.set(comment.pid, []);
+			}
+			childrenMap.get(comment.pid).push(comment);
+		});
+
+		const sorted = [];
+		const visited = new Set();
+
+		repliedComment.children.forEach(comment => {
+			const isTopLevel = !commentMap.has(comment.pid);
+			if (isTopLevel) {
+				visit(comment, childrenMap, visited, sorted)
+			}
+		});
+
+		repliedComment.children = sorted
+
+		if(comment.rid === comment.pid) {
+			repliedComment.children.sort((a, b) => b.time - a.time);
+		}
+		
   } else {
     data.value.unshift(comment);
     count.value += 1;
   }
 };
+
+function visit(comment, childrenMap, visited, output) {
+  if (visited.has(comment.objectId)) return;
+  visited.add(comment.objectId);
+  output.push(comment);
+
+  const replies = childrenMap.get(comment.objectId) || [];
+  replies.forEach(child => visit(child, childrenMap, visited, output));
+	// return output
+}
 
 const onStatusChange = async ({
   comment,
@@ -190,9 +232,6 @@ const onStatusChange = async ({
 const onBanned = async ({ user_id }: WalineComment): Promise<void> => {
 	try {
 		const { serverURL, lang } = config.value;
-		const payload = {
-			is_banned: 1,
-		}
 		const response = await fetch(
 			`${serverURL}/api/user/${user_id}?lang=${lang}`,
 			{
