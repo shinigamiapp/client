@@ -25,11 +25,29 @@ export const CloseIcon: FunctionalComponent<{ size: number }> = ({ size }) =>
 export const DeleteIcon: FunctionalComponent = () =>
   h(
     'svg',
-    { viewBox: '0 0 1024 1024', width: '24', height: '24' },
-    h('path', {
-      d: 'm341.013 394.667 27.755 393.45h271.83l27.733-393.45h64.106l-28.01 397.952a64 64 0 0 1-63.83 59.498H368.768a64 64 0 0 1-63.83-59.52l-28.053-397.93h64.128zm139.307 19.818v298.667h-64V414.485h64zm117.013 0v298.667h-64V414.485h64zM181.333 288h640v64h-640v-64zm453.483-106.667v64h-256v-64h256z',
-      fill: 'red',
-    }),
+    { viewBox: '0 0 24 24', width: '20', height: '20', fill: 'none', stroke: 'red', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'class': 'lucide lucide-trash2-icon lucide-trash-2' }, [
+			h('path', {
+				d: 'M3 6h18',
+			}),
+			h('path', {
+				d: 'M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6',
+			}),
+			h('path', {
+				d: 'M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2',
+			}),
+			h('line', {
+				x1: '10',
+				y1: '11',
+				x2: '10',
+				y2: '17',
+			}),
+			h('line', {
+				x1: '14',
+				y1: '11',
+				x2: '14',
+				y2: '17',
+			}),
+		]
   );
 
 export const SpoilerIcon: FunctionalComponent<{ size: number }> = ({ size }) =>
@@ -74,14 +92,14 @@ export const LikeIcon: FunctionalComponent<{ active: boolean }> = ({
 }: {
   active?: boolean;
 }) =>
-  h('svg', { viewBox: '0 0 1024 1024', width: '24', height: '24' }, [
-    h('path', {
-      d: `M850.654 323.804c-11.042-25.625-26.862-48.532-46.885-68.225-20.022-19.61-43.258-34.936-69.213-45.73-26.78-11.124-55.124-16.727-84.375-16.727-40.622 0-80.256 11.123-114.698 32.135A214.79 214.79 0 0 0 512 241.819a214.79 214.79 0 0 0-23.483-16.562c-34.442-21.012-74.076-32.135-114.698-32.135-29.25 0-57.595 5.603-84.375 16.727-25.872 10.711-49.19 26.12-69.213 45.73-20.105 19.693-35.843 42.6-46.885 68.225-11.453 26.615-17.303 54.877-17.303 83.963 0 27.439 5.603 56.03 16.727 85.117 9.31 24.307 22.659 49.52 39.715 74.981 27.027 40.293 64.188 82.316 110.33 124.915 76.465 70.615 152.189 119.394 155.402 121.371l19.528 12.525c8.652 5.52 19.776 5.52 28.427 0l19.529-12.525c3.213-2.06 78.854-50.756 155.401-121.371 46.143-42.6 83.304-84.622 110.33-124.915 17.057-25.46 30.487-50.674 39.716-74.981 11.124-29.087 16.727-57.678 16.727-85.117.082-29.086-5.768-57.348-17.221-83.963z${
-        active
-          ? ''
-          : 'M512 761.5S218.665 573.55 218.665 407.767c0-83.963 69.461-152.023 155.154-152.023 60.233 0 112.473 33.618 138.181 82.727 25.708-49.109 77.948-82.727 138.18-82.727 85.694 0 155.155 68.06 155.155 152.023C805.335 573.551 512 761.5 512 761.5z'
-      }`,
-      fill: active ? 'red' : 'currentColor',
+  h('svg', { viewBox: '0 0 24 24', width: '20', height: '20', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'class': 'lucide lucide-thumbs-up-icon lucide-thumbs-up' }, [
+    
+		h('path', {
+			d: `M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z`,
+			fill: active ? 'currentColor' : '',
+		}),
+		h('path', {
+      d: `M7 10v12`,
     }),
   ]);
 
@@ -110,22 +128,30 @@ export const MarkdownIcon: FunctionalComponent = () =>
 export const ReplyIcon: FunctionalComponent = () =>
   h(
     'svg',
-    { viewBox: '0 0 1024 1024', width: '24', height: '24' },
-    h('path', {
-      d: 'M810.667 213.333a64 64 0 0 1 64 64V704a64 64 0 0 1-64 64H478.336l-146.645 96.107a21.333 21.333 0 0 1-33.024-17.856V768h-85.334a64 64 0 0 1-64-64V277.333a64 64 0 0 1 64-64h597.334zm0 64H213.333V704h149.334v63.296L459.243 704h351.424V277.333zm-271.36 213.334v64h-176.64v-64h176.64zm122.026-128v64H362.667v-64h298.666z',
-      fill: 'currentColor',
-    }),
+    { viewBox: '0 0 24 24', width: '20', height: '20', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'class': 'lucide lucide-reply-icon lucide-reply' }, [
+			h('path', {
+				d: 'M7.9 20A9 9 0 1 0 4 16.1L2 22Z',
+			}),
+			h('path', {
+				d: 'm10 15-3-3 3-3',
+			}),
+			h('path', {
+				d: 'M7 12h7a2 2 0 0 1 2 2v1',
+			}),
+		]
   );
 
 export const EditIcon: FunctionalComponent = () =>
   h(
     'svg',
-    { viewBox: '0 0 1024 1024', width: '24', height: '24' },
-    h('path', {
-      d: 'M813.039 318.772L480.53 651.278H360.718V531.463L693.227 198.961C697.904 194.284 704.027 192 710.157 192C716.302 192 722.436 194.284 727.114 198.961L813.039 284.88C817.72 289.561 820 295.684 820 301.825C820 307.95 817.72 314.093 813.039 318.772ZM710.172 261.888L420.624 551.431V591.376H460.561L750.109 301.825L710.172 261.888ZM490.517 291.845H240.906V771.09H720.156V521.479C720.156 504.947 733.559 491.529 750.109 491.529C766.653 491.529 780.063 504.947 780.063 521.479V791.059C780.063 813.118 762.18 831 740.125 831H220.937C198.882 831 181 813.118 181 791.059V271.872C181 249.817 198.882 231.935 220.937 231.935H490.517C507.06 231.935 520.47 245.352 520.47 261.888C520.47 278.424 507.06 291.845 490.517 291.845Z',
-      fill: 'currentColor',
-    }),
-  );
+    { viewBox: '0 0 24 24', width: '20', height: '20', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'class': 'lucide lucide-square-pen-icon lucide-square-pen' }, [
+			h('path', {
+				d: 'M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7',
+			}),
+			h('path', {
+      	d: 'M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z',
+    	}),
+		]);
 
 export const VerifiedIcon: FunctionalComponent = () =>
   h(
@@ -140,6 +166,30 @@ export const VerifiedIcon: FunctionalComponent = () =>
       d: 'm894.4 461.56-54.4-63.2c-10.4-12-18.8-34.4-18.8-50.4v-68c0-42.4-34.8-77.2-77.2-77.2h-68c-15.6 0-38.4-8.4-50.4-18.8l-63.2-54.4c-27.6-23.6-72.8-23.6-100.8 0l-62.8 54.8c-12 10-34.8 18.4-50.4 18.4h-69.2c-42.4 0-77.2 34.8-77.2 77.2v68.4c0 15.6-8.4 38-18.4 50l-54 63.6c-23.2 27.6-23.2 72.4 0 100l54 63.6c10 12 18.4 34.4 18.4 50v68.4c0 42.4 34.8 77.2 77.2 77.2h69.2c15.6 0 38.4 8.4 50.4 18.8l63.2 54.4c27.6 23.6 72.8 23.6 100.8 0l63.2-54.4c12-10.4 34.4-18.8 50.4-18.8h68c42.4 0 77.2-34.8 77.2-77.2v-68c0-15.6 8.4-38.4 18.8-50.4l54.4-63.2c23.2-27.6 23.2-73.2-.4-100.8zm-216-25.2-193.2 193.2a30 30 0 0 1-42.4 0l-96.8-96.8a30.16 30.16 0 0 1 0-42.4c11.6-11.6 30.8-11.6 42.4 0l75.6 75.6 172-172c11.6-11.6 30.8-11.6 42.4 0 11.6 11.6 11.6 30.8 0 42.4z',
       fill: '#27ae60',
     }),
+  );
+
+export const StickyIcon: FunctionalComponent = () =>
+  h(
+    'svg',
+    {
+      class: 'lucide lucide-pin-icon lucide-pin',
+      viewBox: '0 0 24 24',
+      width: '20',
+      height: '20',
+			fill: 'none',
+			stroke: 'currentColor',
+			'stroke-width': '2',
+			'stroke-linecap': 'round',
+			'stroke-linejoin': 'round',
+    },
+		[
+			h('path', {
+				d: 'M12 17v5',
+			}),
+			h('path', {
+				d: 'M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z',
+			}),
+		]
   );
 
 export const LoadingIcon: FunctionalComponent<{ size?: number }> = ({
@@ -226,5 +276,41 @@ export const MinusIcon: FunctionalComponent = () =>
 			'stroke-linejoin':"round",
 			'stroke-width':"1.5",
 			d: 'M6 12h12',
+		}),
+	);
+
+export const ChevronDownIcon: FunctionalComponent = () =>
+	h('svg',
+		{
+			width: 20,
+			height: 20,
+			fill: 'none',
+			viewBox: '0 0 24 24',
+			stroke: 'currentColor',
+			'stroke-width': 2,
+			'stroke-linecap': 'round',
+			'stroke-linejoin': 'round',
+			class: 'lucide lucide-chevron-down-icon lucide-chevron-down'
+		},
+		h('path', {
+			d: 'm6 9 6 6 6-6',
+		}),
+	);
+
+export const ChevronUpIcon: FunctionalComponent = () =>
+	h('svg',
+		{
+			width: 20,
+			height: 20,
+			fill: 'none',
+			viewBox: '0 0 24 24',
+			stroke: 'currentColor',
+			'stroke-width': 2,
+			'stroke-linecap': 'round',
+			'stroke-linejoin': 'round',
+			class: 'lucide lucide-chevron-down-icon lucide-chevron-down'
+		},
+		h('path', {
+			d: 'm18 15-6-6-6 6',
 		}),
 	);
