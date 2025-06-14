@@ -90,12 +90,15 @@
 
   li {
     display: inline-block;
-    color: var(--waline-info-color);
+		padding: 4px 8px;
+		background-color: #1e1e1e;
+		border-radius: 0.5em;
+    color: #fff;
     font-size: 0.75em;
     cursor: pointer;
 
     &.active {
-      color: var(--waline-theme-color);
+      background-color: var(--waline-theme-color);
     }
 
     + li {
