@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useNow } from '@vueuse/core';
-import initReadMore from '@corgras/readmore-js';
 import type { WalineComment, WalineCommentStatus } from '@waline/api';
 import type { ComputedRef } from 'vue';
 import { computed, inject, onMounted, ref } from 'vue';
@@ -86,17 +85,7 @@ const isEditingCurrent = computed(
 
 const showReplies = ref<boolean>(false);
 function init() {
-	initReadMore('.wl-readmore', { 
-		collapsedHeight: 200,
-		speed: 300,
-		moreLink: '<span>Read More</span>',
-		lessLink: '',
-		afterToggle: (button: any, _element: any, isExpanded: boolean) => {
-			if(isExpanded) {
-				button.style.display = 'none';
-			}
-		}
-	});
+	
 }
 
 function onSubmit(comment: WalineComment) {
@@ -191,7 +180,14 @@ onMounted(() => {
 						<a :href="'#' + comment.pid">@{{ comment.reply_user.nick }}</a>
 						<span>: </span>
 					</p>
-					<div class="wl-readmore" v-html="comment.comment" />
+					<TruncateReadMore
+						:truncate-value="300"
+						:only-if-more-than-value="375"
+					>
+						<template #html>
+							<div v-html="comment.comment" />
+						</template>
+					</TruncateReadMore>
 				</div>
 
 				<div style="display: flex; justify-content: space-between; align-items: center;">
