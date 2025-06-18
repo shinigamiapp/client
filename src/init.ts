@@ -1,5 +1,6 @@
 import { createApp, h, reactive, watchEffect } from 'vue';
 import Toast from "vue-toastification";
+import TruncateReadMore from 'vue-truncate-read-more';
 
 import { commentCount } from './comment.js';
 import Waline from './components/WalineComment.vue';
@@ -84,6 +85,7 @@ export const init = ({
 			position: 'top-right',
 			timeout: 3000,
 		});
+		app.use(TruncateReadMore);
 		app.mount(root!);
 	}
 
